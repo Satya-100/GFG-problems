@@ -5,32 +5,56 @@ using namespace std;
 
 // } Driver Code Ends
 class Solution {
+    void dfs(int i, vector<vector<int>>& adj, vector<int>& vis, stack<int>& st){
+        vis[i]=1;
+        for(int it: adj[i]){
+            if(!vis[it]){
+                dfs(it, adj, vis, st);
+            }
+        }
+        st.push(i);
+    }
   public:
     // Function to return list containing vertices in Topological order.
     vector<int> topologicalSort(vector<vector<int>>& adj) {
-        // Your code here
-        int n = adj.size();
-        vector<int> indegree(n, 0);
+        int n=adj.size();
+        vector<int> vis(n, 0);
+        stack<int> st;
         for(int i=0;i<n;i++){
-            for(int j: adj[i]){
-                indegree[j]++;
-            }
+            if(!vis[i]) dfs(i, adj, vis, st);
         }
-        queue<int> q;
-        for(int i=0;i<n;i++){
-            if(indegree[i]==0)  q.push(i);
-        }
+        
         vector<int> res;
-        while(!q.empty()){
-            int node = q.front();
-            q.pop();
-            res.push_back(node);
-            for(int i: adj[node]){
-                indegree[i]--;
-                if(indegree[i]==0)  q.push(i);
-            }
+        while(!st.empty()){
+            res.push_back(st.top());
+            st.pop();
         }
         return res;
+        
+        
+        // Your code here
+        // int n = adj.size();
+        // vector<int> indegree(n, 0);
+        // for(int i=0;i<n;i++){
+        //     for(int j: adj[i]){
+        //         indegree[j]++;
+        //     }
+        // }
+        // vector<int> res;
+        // queue<int> q;
+        // for(int i=0;i<n;i++){
+        //     if(indegree[i]==0)  q.push(i);
+        // }
+        // while(!q.empty()){
+        //     int node = q.front();
+        //     q.pop();
+        //     res.push_back(node);
+        //     for(int i: adj[node]){
+        //         indegree[i]--;
+        //         if(indegree[i]==0)  q.push(i);
+        //     }
+        // }
+        // return res;
     }
 };
 
