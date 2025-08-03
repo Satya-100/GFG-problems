@@ -1,88 +1,45 @@
-//{ Driver Code Starts
-#include <bits/stdc++.h>
-using namespace std;
-
-
-// } Driver Code Ends
 // class implemented
-/*
+
 struct Item{
-    int value;
-    int weight;
+    int val;
+    int wt;
 };
-*/
+
 
 class Solution {
+    bool static comparator(Item a, Item b){
+        double au = (double) a.val / (double) a.wt;
+        double bu = (double) b.val / (double) b.wt;
+        return au>bu;
+    }
+    
   public:
-    // Function to get the maximum total value in the knapsack.
     double fractionalKnapsack(vector<int>& val, vector<int>& wt, int capacity) {
-        // Your code here
-        int n=val.size();
-        vector<pair<double, int>> VtW;
+        // code here
+        int n = val.size();
+        Item arr[n];
+        
         for(int i=0;i<n;i++){
-            double k = (double)val[i]/wt[i];
-            VtW.push_back({k, i});
+            arr[i].val = val[i];
+            arr[i].wt = wt[i];
         }
         
-        sort(VtW.begin(), VtW.end(), greater<pair<double, int>>());
-        int temp=capacity;
-        double res=0;
+        sort(arr, arr+n, comparator);
+        
+        double max_total = 0;
+        double cur_wt = 0;
+        
         for(int i=0;i<n;i++){
-            int ind = VtW[i].second;
-            if(temp-wt[ind]>=0){
-                temp = temp-wt[ind];
-                res+=val[ind];
-            }
-            else{
-                res+= (double)(temp)*(val[ind]/(double)wt[ind]);
+            if(cur_wt + arr[i].wt <= capacity){
+                cur_wt += arr[i].wt;
+                max_total += arr[i].val;
+            } else{
+                double remain = capacity - cur_wt;
+                max_total += (arr[i].val / (double) arr[i].wt) * (double) remain;
                 break;
             }
         }
-        return res;
+        
+        return max_total;
     }
 };
-
-
-//{ Driver Code Starts.
-
-int main() {
-
-    int t;
-    // taking testcases
-    cin >> t;
-    cin.ignore(); // to ignore the newline after the number of test cases
-    cout << setprecision(6) << fixed;
-
-    while (t--) {
-        // Reading the value array
-        vector<int> values;
-        string input;
-        getline(cin, input);
-        stringstream ss(input);
-        int number;
-        while (ss >> number) {
-            values.push_back(number);
-        }
-
-        // Reading the weight array
-        vector<int> weights;
-        getline(cin, input);
-        stringstream ss2(input);
-        while (ss2 >> number) {
-            weights.push_back(number);
-        }
-
-        // Reading the capacity
-        int w;
-        cin >> w;
-        cin.ignore(); // to ignore the newline after capacity
-
-        // function call
-        Solution ob;
-        cout << ob.fractionalKnapsack(values, weights, w) << endl;
-        cout << "~" << endl;
-    }
-    return 0;
-}
-
-// } Driver Code Ends
