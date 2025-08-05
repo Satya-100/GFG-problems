@@ -1,15 +1,15 @@
 class Solution {
     int merge(vector<int>& arr, int l, int mid, int r){
-        int low = l;
-        int high = mid+1;
         int cnt = 0;
         vector<int> temp;
+        int low = l;
+        int high = mid+1;
         
         while(low<=mid && high<=r){
             if(arr[low]<=arr[high]){
                 temp.push_back(arr[low]);
                 low++;
-            }else{
+            } else{
                 temp.push_back(arr[high]);
                 high++;
                 cnt += mid-low+1;
@@ -34,14 +34,12 @@ class Solution {
     }
     
     int mergeSort(vector<int>& arr, int l, int r){
-        int cnt = 0;
-        if(l==r)    return cnt;
+        if(l==r)    return 0;
         int mid = (l+r)/2;
-        
+        int cnt = 0;
         cnt += mergeSort(arr, l, mid);
         cnt += mergeSort(arr, mid+1, r);
         cnt += merge(arr, l, mid, r);
-        
         return cnt;
     }
     
