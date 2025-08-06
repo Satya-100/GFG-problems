@@ -42,7 +42,6 @@ class Solution {
     Node *flatten(Node *root) {
         // Your code here
         if(!root || !root->next)    return root;
-        
         root->next = flatten(root->next);
         return mergeLL(root, root->next);
     }
